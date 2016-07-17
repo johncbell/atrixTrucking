@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AtrixTrucking Report</string>
+    <string name="atrixlogo">atrixlogo</string>
+    <string name="pick_date">Pick Date</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+
+</resources>

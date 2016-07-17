@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/openWebsite"
+        android:title="Our Website"
+        android:showAsAction="never"
+
+        />
+
+    <item
+        android:id="@+id/about_us"
+        android:title="Contact Us"
+        android:showAsAction="never"
+
+        />
+    <item
+        android:id="@+id/goto2"
+        android:title="Activity2 go"
+        android:showAsAction="never"
+
+        />
+</menu>

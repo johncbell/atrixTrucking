@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_menu"
+        android:title="Main Menu"
+        android:showAsAction="never"
+
+        />
+    <item
+        android:id="@+id/our_website"
+        android:title="Our Website"
+        android:showAsAction="never"
+
+        />
+
+    <item
+        android:id="@+id/about_us"
+        android:title="Contact Us"
+        android:showAsAction="never"
+
+        />
+</menu>
