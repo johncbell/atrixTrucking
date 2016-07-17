@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Spinner spinner2;
     String[] SPINNERVALUES2 = {"None Selected","MCIO","NYCN","NYCN","NYCN","NYCN","NYCN","NYCN"};
 
-
+    //This is a minor change
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
