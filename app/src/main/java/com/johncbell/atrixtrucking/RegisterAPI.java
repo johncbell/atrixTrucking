@@ -7,11 +7,11 @@ import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
 
 /**
- * Created by Belal and johncbell on 11/5/2015.
+ * Created by Belal and johncbell on 04/25/2016.
  */
 public interface RegisterAPI {
     @FormUrlEncoded
-    @POST("/insert.php")
+    @POST("/insert_test_atrix.php")
     public void insertUser(
             @Field("trucksID") String trucksID,
             @Field("tripReportNumber") String tripReportNumber,

@@ -41,14 +41,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText emptyMilage;
     private EditText loadedMilage;
 
-    private Button buttonRegister;
+    public Button buttonRegister;
 
     private View btnclear;
     private String estTotal;
     private TextView estMilage;
 
     //This is our root url
-    public static final String ROOT_URL = "http://www.paragonsofjustice.org/php/";
+    public static final String ROOT_URL = "http://www.atrixtrucking.com/wp-content/php/";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -155,6 +155,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.goto2:
                 Intent activity2 = new Intent(this, MainActivity2.class);
                 this.startActivity(activity2);
+                return true;
+
+            case R.id.goto3:
+                Intent activity3 = new Intent(this, MainVersion2.class);
+                this.startActivity(activity3);
                 return true;
 
             case R.id.about_us:

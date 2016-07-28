@@ -31,7 +31,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 //Class for our main activity with OnClickListener
-public class MainActivity2 extends AppCompatActivity implements View.OnClickListener {
+public class MainVersion2 extends AppCompatActivity implements View.OnClickListener {
 
     //Declaring views
     private WebView webView;
@@ -41,7 +41,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     private EditText emptyMilage;
     private EditText loadedMilage;
 
-    private Button buttonRegister;
+    public Button buttonRegister;
 
     private View btnclear;
     private String estTotal;
@@ -64,15 +64,15 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_version2);
         String spiller = null;
 
         spinner =(Spinner)findViewById(R.id.startLocation);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_list_item_1, SPINNERVALUES);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainVersion2.this, android.R.layout.simple_list_item_1, SPINNERVALUES);
         spinner.setAdapter(adapter);
 
         spinner2 =(Spinner)findViewById(R.id.emptyLocation);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainActivity2.this, android.R.layout.simple_list_item_1, SPINNERVALUES2);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainVersion2.this, android.R.layout.simple_list_item_1, SPINNERVALUES2);
         spinner2.setAdapter(adapter);
 
         //Trying to get Spinner 1 and 2 Values
@@ -88,6 +88,7 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 // TODO Auto-generated method stub
 
             }
+
         });
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -157,6 +158,11 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                 this.startActivity(activity2);
                 return true;
 
+            case R.id.goto3:
+                Intent activity3 = new Intent(this, MainVersion2.class);
+                this.startActivity(activity3);
+                return true;
+
             case R.id.about_us:
                 Intent about = new Intent(this, aboutUs.class);
                 this.startActivity(about);
@@ -218,13 +224,13 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
                         }
 
                         //Displaying the output as a toast
-                        Toast.makeText(MainActivity2.this, output, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainVersion2.this, output, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         //If any error occured displaying the error as toast
-                        Toast.makeText(MainActivity2.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainVersion2.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -233,11 +239,9 @@ public class MainActivity2 extends AppCompatActivity implements View.OnClickList
     //Overriding onclick method
     @Override
     public void onClick(View v) {
-        //Calling insertUser on button click
-        insertUser();
-
-    }
-
+            //Calling insertUser on button click
+            insertUser();
+        }
     @Override
     public void onStart() {
         super.onStart();
