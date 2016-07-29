@@ -19,7 +19,7 @@
         <activity android:name=".aboutUs" />
         <activity android:name=".ourWebsite" />
         <activity android:name=".MainActivity2" />
-        <activity android:name=".MainVersion2" />
+        <activity android:name=".MainVersionDatepicker"/>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

@@ -1,5 +1,7 @@
 package com.johncbell.atrixtrucking;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +14,9 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,28 +28,43 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+/**
+ * Created by johncbell on 7/27/2016.
+ */
+
 //Class for our main activity with OnClickListener
-public class MainVersion2 extends AppCompatActivity implements View.OnClickListener {
+public class MainVersionDatepicker extends AppCompatActivity implements View.OnClickListener {
 
     //Declaring views
     private WebView webView;
     private EditText trucksID;
     private EditText tripReportNumber;
-    private EditText enteredDate;
+    private String enteredDate;
     private EditText emptyMilage;
     private EditText loadedMilage;
-
     public Button buttonRegister;
+    private TextView estMilage;
+    //Var's to populate spinner options selections to pass to DB
+    private String startState;
+    private String startTerminal;
+    private String endState;
+    private String endTerminal;
 
+    private GoogleApiClient client;
     private View btnclear;
     private String estTotal;
-    private TextView estMilage;
+
+    //Calendar Values:
+    Button btn;
+    int year_x,month_x,day_x;
+    static final int DIALOG_ID=0;
 
     //This is our root url
     public static final String ROOT_URL = "http://www.atrixtrucking.com/wp-content/php/";
@@ -53,9 +72,9 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
-    Spinner spinner;
-    String[] SPINNERVALUES = {"None Selected","MCIO","NYCN","NYCN","NYCN","NYCN","NYCN","NYCN"};
+
+    Spinner spinner,s1,s2;
+//    String[] SPINNERVALUES = {"None Selected","MCIO","NYCN","NYCN","NYCN","NYCN","NYCN","NYCN"};
 
     Spinner spinner2;
     String[] SPINNERVALUES2 = {"None Selected","MCIO","NYCN","NYCN","NYCN","NYCN","NYCN","NYCN"};
@@ -64,31 +83,35 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_version2);
-        String spiller = null;
+        setContentView(R.layout.activity_versiondatepicker);
 
+        //Calendar Stuff
+        final Calendar cal = Calendar.getInstance();
+        year_x = cal.get(Calendar.YEAR);
+        month_x = cal.get(Calendar.MONTH);
+        day_x = cal.get(Calendar.DAY_OF_MONTH);
+
+        showDialogOnButtonClick();
+        //End of Calendar Stuff
+
+        //New Spinner Details
         spinner =(Spinner)findViewById(R.id.startLocation);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainVersion2.this, android.R.layout.simple_list_item_1, SPINNERVALUES);
-        spinner.setAdapter(adapter);
+        ArrayAdapter<String> spinnerCountShoesArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.stateArray));
+        spinner.setAdapter(spinnerCountShoesArrayAdapter);
 
         spinner2 =(Spinner)findViewById(R.id.emptyLocation);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainVersion2.this, android.R.layout.simple_list_item_1, SPINNERVALUES2);
-        spinner2.setAdapter(adapter);
-
+        ArrayAdapter<String> spinnerCountShoesArrayAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.stateArray));
+        spinner.setAdapter(spinnerCountShoesArrayAdapter2);
         //Trying to get Spinner 1 and 2 Values
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {}
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
-
             }
-
         });
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -104,10 +127,13 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+
+
+
         //Initializing Views
         trucksID = (EditText) findViewById(R.id.trucksID);
         tripReportNumber = (EditText) findViewById(R.id.tripReportNumber);
-        enteredDate = (EditText) findViewById(R.id.enteredDate);
         emptyMilage = (EditText) findViewById(R.id.emptyMilage);
         loadedMilage = (EditText) findViewById(R.id.loadedMilage);
         estMilage = (TextView) findViewById(R.id.estMilage);
@@ -123,13 +149,15 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 trucksID.setText("");
                 tripReportNumber.setText("");
-                enteredDate.setText("");
+                //enteredDate.setText("");
                 emptyMilage.setText("");
                 loadedMilage.setText("");
                 estMilage.setText("");
-
             }
         });
+
+        //Trying to add in the Edit Text Calendar
+
 
         //Adding listener to button
         buttonRegister.setOnClickListener(this);
@@ -137,6 +165,40 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
+
+    //Calendar from Beginners #27
+    public void showDialogOnButtonClick() {
+        btn = (Button) findViewById(R.id.button);
+
+        btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showDialog(DIALOG_ID);
+                    }
+                }
+        );
+    }
+        @Override
+        protected Dialog onCreateDialog(int id){
+            if (id == DIALOG_ID)
+                    return new DatePickerDialog(this,dpickerListener,year_x,month_x,day_x);
+            return null;
+        }
+    private DatePickerDialog.OnDateSetListener dpickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            year_x = year;
+            month_x = monthOfYear +1;
+            day_x = dayOfMonth;
+            Toast myToast = Toast.makeText(MainVersionDatepicker.this,month_x+"/"+day_x+"/"+year_x,Toast.LENGTH_SHORT);
+            myToast.show();
+
+            //Now the statement below gets the text displayed
+            enteredDate = ((TextView)((LinearLayout)myToast.getView()).getChildAt(0)).getText().toString();
+      }
+    };
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -193,14 +255,12 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
                 //Passing the values by getting it from editTexts
                 trucksID.getText().toString(),
                 tripReportNumber.getText().toString(),
-                enteredDate.getText().toString(),
+                enteredDate,
                 emptyMilage.getText().toString(),
                 loadedMilage.getText().toString(),
-                //   String emptyLocation = spinner.getSelectedItem().toString(),
 
                 //can take this out below
                 Integer.toString(estMilage),
-
 
                 //Creating an anonymous callback
                 new Callback<Response>() {
@@ -224,13 +284,13 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
                         }
 
                         //Displaying the output as a toast
-                        Toast.makeText(MainVersion2.this, output, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainVersionDatepicker.this, output, Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         //If any error occured displaying the error as toast
-                        Toast.makeText(MainVersion2.this, error.toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainVersionDatepicker.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -239,9 +299,9 @@ public class MainVersion2 extends AppCompatActivity implements View.OnClickListe
     //Overriding onclick method
     @Override
     public void onClick(View v) {
-            //Calling insertUser on button click
-            insertUser();
-        }
+        //Calling insertUser on button click
+        insertUser();
+    }
     @Override
     public void onStart() {
         super.onStart();

@@ -166,6 +166,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent about = new Intent(this, aboutUs.class);
                 this.startActivity(about);
                 return true;
+
+            case R.id.goto4:
+                Intent actDate = new Intent(this, MainVersionDatepicker.class);
+                this.startActivity(actDate);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
