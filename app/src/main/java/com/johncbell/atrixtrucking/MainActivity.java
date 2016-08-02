@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText enteredDate;
     private EditText emptyMilage;
     private EditText loadedMilage;
+    private String startState;
+    private String startTerminal;
 
     public Button buttonRegister;
 
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, SPINNERVALUES);
         spinner.setAdapter(adapter);
 
-        spinner2 =(Spinner)findViewById(R.id.emptyLocation);
+        spinner2 =(Spinner)findViewById(R.id.endState);
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, SPINNERVALUES2);
         spinner2.setAdapter(adapter);
 
@@ -152,16 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.startActivity(website);
                 return true;
 
-            case R.id.goto2:
-                Intent activity2 = new Intent(this, MainActivity2.class);
-                this.startActivity(activity2);
-                return true;
-
-            case R.id.goto3:
-                Intent activity3 = new Intent(this, MainVersion2.class);
-                this.startActivity(activity3);
-                return true;
-
             case R.id.about_us:
                 Intent about = new Intent(this, aboutUs.class);
                 this.startActivity(about);
@@ -171,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent actDate = new Intent(this, MainVersionDatepicker.class);
                 this.startActivity(actDate);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -200,11 +193,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 enteredDate.getText().toString(),
                 emptyMilage.getText().toString(),
                 loadedMilage.getText().toString(),
+
              //   String emptyLocation = spinner.getSelectedItem().toString(),
 
                 //can take this out below
                 Integer.toString(estMilage),
-
+                startState,
+                startTerminal,
 
                 //Creating an anonymous callback
                 new Callback<Response>() {

@@ -9,7 +9,7 @@ import retrofit.http.POST;
 /**
  * Created by Belal and johncbell on 04/25/2016.
  */
-public interface RegisterAPI {
+public interface RegisterAPITest {
     @FormUrlEncoded
     @POST("/insert_test_atrix.php")
     public void insertUser(
@@ -21,5 +21,7 @@ public interface RegisterAPI {
             @Field("estMilage") String estMilage,
             @Field("startState") String startState,
             @Field("startTerminal") String startTerminal,
+            @Field("endState") String endState,
+            @Field("endTerminal") String endTerminal,
             Callback<Response> callback);
 }
